@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", serif;
+}
+
+@layer base {
+  body {
+    @apply bg-[#fdfcfb] text-[#2d2d2d] antialiased;
+  }
+}
+
+.organic-card {
+  @apply bg-white border border-[#e8e4e1] rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)];
+}
+
+.serif-text {
+  font-family: var(--font-serif);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-[#e8e4e1] rounded-full hover:bg-[#d8d4d1] transition-colors;
+}
+
+.pill-button {
+  @apply rounded-full px-6 py-2.5 font-medium transition-all active:scale-95;
+}

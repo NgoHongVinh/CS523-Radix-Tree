@@ -1,0 +1,6 @@
+{
+  "name": "RadixDict",
+  "description": "An English dictionary application using a Radix-Trie index with real-time visualization of data structure changes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
