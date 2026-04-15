@@ -123,6 +123,7 @@ export default function App() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [showResultOverlay, setShowResultOverlay] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const [activeCodeTab, setActiveCodeTab] = useState<keyof typeof PYTHON_CODE>("search");
   const [operationSteps, setOperationSteps] = useState<OperationStep[]>([]);
@@ -158,6 +159,7 @@ export default function App() {
     const query = searchQuery.toLowerCase().trim();
     if (!query) return;
     
+    setSuccessMessage(null);
     setActiveCodeTab("search");
     const { entry, steps } = trie.search(query);
     setSearchResult(entry || null);
@@ -168,6 +170,7 @@ export default function App() {
     setHasSearched(false);
     setSearchQuery("");
     setSearchResult(null);
+    setSuccessMessage(null);
     setOperationSteps([]);
     setCurrentStepIndex(-1);
     setShowResultOverlay(false);
@@ -188,6 +191,9 @@ export default function App() {
     setActiveCodeTab("insert");
     const steps = trie.insert(word, entry);
     setTrie(Object.assign(Object.create(Object.getPrototypeOf(trie)), trie)); // Force re-render
+    setSearchResult(entry);
+    setSearchQuery(word);
+    setSuccessMessage(null);
     runAnimation(steps);
     
     setNewWord("");
@@ -226,7 +232,8 @@ export default function App() {
     const { success, steps } = trie.delete(word);
     if (success) {
       setTrie(Object.assign(Object.create(Object.getPrototypeOf(trie)), trie)); // Force re-render
-      if (searchResult?.word === word) setSearchResult(null);
+      setSearchResult(null);
+      setSuccessMessage(`Word "${word.toUpperCase()}" has been successfully removed from the index.`);
     }
     runAnimation(steps);
   };
@@ -509,7 +516,25 @@ export default function App() {
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               className="relative w-full max-w-2xl"
             >
-              {searchResult ? (
+              {successMessage ? (
+                <div className="bg-white border border-[#2d2d2d]/10 p-16 text-center shadow-2xl relative rounded-[3rem]">
+                  <button 
+                    onClick={() => setShowResultOverlay(false)}
+                    className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center bg-[#fdfcfb] text-[#2d2d2d] hover:bg-[#2d2d2d] hover:text-white transition-all rounded-full"
+                  >
+                    <Plus className="rotate-45" size={24} />
+                  </button>
+                  <CheckCircle2 className="text-[#00f2ff] mx-auto mb-8" size={64} />
+                  <p className="text-4xl font-black text-[#2d2d2d] uppercase tracking-tighter">Success</p>
+                  <p className="text-[#6a6a6a] text-lg mt-6 font-bold">{successMessage}</p>
+                  <button 
+                    onClick={() => setShowResultOverlay(false)}
+                    className="mt-12 px-10 py-4 bg-[#2d2d2d] text-[#00f2ff] font-black uppercase text-xs tracking-widest hover:bg-[#00f2ff] hover:text-black transition-all rounded-full"
+                  >
+                    Continue
+                  </button>
+                </div>
+              ) : searchResult ? (
                 <section className="bg-white border border-[#2d2d2d]/10 p-12 relative overflow-hidden shadow-2xl rounded-[3rem]">
                   <div className="absolute top-0 right-0 p-6 flex gap-4">
                     <button 
