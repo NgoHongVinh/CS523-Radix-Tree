@@ -1,4 +1,4 @@
-# VISUALIZER THUẬT TOÁN B-Tree
+# VISUALIZER THUẬT TOÁN Radix Tree
 
 ---
 
